@@ -5,8 +5,13 @@ printf "Enter LDAP User Name:"
 read uname
 printf "Enter LDAP Password:"
 read -s passwd
-page=`curl -# --data "uname=$uname&passwd=$passwd"   https://internet.iitb.ac.in/index.php`
-status=`echo $page|grep -c 'logout' `
+logfile=' /tmp/wget_internertStatus.txt'
+outputfile='/tmp/wget_internertStatus_output.html'
+wget https://internet.iitb.ac.in/index.php --post-data="uname=$uname&passwd=$passwd" -o $logfile -O $outputfile
+status=`cat $outputfile|grep -c 'logout' `
+rm $logfile
+rm $outputfile
+echo ''
 if [ "$status" -eq "1" ] 
 then
 	echo "Status: Connection of SUCCESSFULL!!!"
